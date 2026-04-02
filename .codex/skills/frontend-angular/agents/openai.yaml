@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Angular"
+  short_description: "Angular rules for RPG frontend, including responsive UI"
+  default_prompt: "Use $frontend-angular to define or review Angular development rules for the role-playing game frontend, including responsive behavior for mobile and tablet layouts."

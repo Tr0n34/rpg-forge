@@ -1,0 +1,4 @@
+interface:
+  display_name: "Backend Policy"
+  short_description: "Policy/Rule composition for RPG backend"
+  default_prompt: "Use $backend-policy to define, refactor, or review composed backend policies and rules for the role-playing game project."

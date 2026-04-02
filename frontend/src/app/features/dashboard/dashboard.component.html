@@ -1,0 +1,57 @@
+@if (!isAuthenticated()) {
+  <section class="panel empty-state">
+    <h2>Mes personnages</h2>
+    <p>Connectez-vous pour afficher la liste de vos personnages.</p>
+    <button type="button" (click)="login()">Se connecter</button>
+  </section>
+} @else {
+  <section class="panel dashboard-panel">
+    <div class="section-head">
+      <div>
+        <p class="kicker">Accueil</p>
+        <h2>Mes personnages</h2>
+      </div>
+      <a routerLink="/characters">Ouvrir la gestion complete</a>
+    </div>
+
+    @if (error()) {
+      <div class="status-row">
+        <p class="status-error">{{ error() }}</p>
+        <button type="button" class="secondary compact" (click)="retry()">Reessayer</button>
+      </div>
+    }
+
+    @if (loading()) {
+      <p>Chargement...</p>
+    } @else {
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Prenom</th>
+              <th>Titre</th>
+              <th>Niveau</th>
+              <th>Mis a jour</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (character of characters(); track character.id) {
+              <tr>
+                <td>{{ character.lastName }}</td>
+                <td>{{ character.firstName }}</td>
+                <td>{{ character.title || '-' }}</td>
+                <td>{{ character.level }}</td>
+                <td>{{ character.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="5">Aucun personnage pour ce compte.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "RPG Integration Libraries"
+  short_description: "Rules for external RPG integrations"
+  default_prompt: "Use $lib-rpg-integration to define or review external integration rules for the role-playing game project."

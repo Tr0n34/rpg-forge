@@ -1,0 +1,92 @@
+<section class="page-grid">
+  <div class="panel">
+    <div class="list-header">
+      <h2>Mes personnages</h2>
+      <div class="list-actions">
+        <button
+          type="button"
+          class="filter-toggle compact"
+          [class.active]="filtersOpen()"
+          [attr.aria-expanded]="filtersOpen()"
+          (click)="toggleFilters()">
+          <span class="filter-icon" aria-hidden="true"></span>
+          <span>Filtres</span>
+        </button>
+        <a routerLink="/characters/creation" class="link-button">Creation</a>
+      </div>
+    </div>
+
+    @if (filtersOpen()) {
+      <form class="filters-form" [formGroup]="filtersForm">
+        <div class="field compact-field date-field">
+          <label for="createdFrom">Cree du</label>
+          <input id="createdFrom" type="date" formControlName="createdFrom" />
+        </div>
+
+        <div class="field compact-field date-field">
+          <label for="createdTo">Cree au</label>
+          <input id="createdTo" type="date" formControlName="createdTo" />
+        </div>
+
+        <div class="field compact-field search-field">
+          <label for="filterLastName">Nom</label>
+          <input id="filterLastName" type="text" formControlName="lastName" />
+        </div>
+
+        <div class="filters-actions">
+          <button type="button" class="compact" (click)="search()">Rechercher</button>
+        </div>
+      </form>
+    }
+
+    @if (error()) {
+      <p class="status-error">{{ error() }}</p>
+    }
+
+    @if (loading()) {
+      <p>Chargement...</p>
+    } @else {
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Prenom</th>
+              <th>Profil</th>
+              <th>Force</th>
+              <th>Agilite</th>
+              <th>Constitution</th>
+              <th>PV</th>
+              <th>Mana</th>
+              <th>Defense</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (character of characters(); track character.id) {
+              <tr>
+                <td>{{ character.lastName }}</td>
+                <td>{{ character.firstName }}</td>
+                <td>{{ allocationProfileLabel(character.allocationProfile) }}</td>
+                <td>{{ character.attributes.strength }}</td>
+                <td>{{ character.attributes.agility }}</td>
+                <td>{{ character.attributes.constitution }}</td>
+                <td>{{ character.derivedStats.healthPoints }}</td>
+                <td>{{ character.derivedStats.manaPoints }}</td>
+                <td>{{ character.derivedStats.passiveDefense }}</td>
+                <td class="actions">
+                  <a [routerLink]="['/characters', character.id, 'edition']" class="table-link">Modifier</a>
+                  <button type="button" class="danger compact" (click)="remove(character)">Supprimer</button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="10">Aucun personnage pour ces filtres.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</section>

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Backend Error"
+  short_description: "Backend error handling and logging rules"
+  default_prompt: "Use $backend-error to define or review backend error handling, error catalog externalization, centralized HTTP translation, and logging rules for the role-playing game backend."

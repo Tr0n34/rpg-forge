@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Configuration"
+  short_description: "Angular config rules for RPG app"
+  default_prompt: "Use $frontend-configuration to define or review Angular configuration rules for the role-playing game frontend."

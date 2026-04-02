@@ -1,0 +1,85 @@
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand-row">
+      <div class="brand-block">
+        <p class="eyebrow">RPG Forge</p>
+        <h1>Back-office RPG</h1>
+      </div>
+
+      <nav class="nav">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Accueil</a>
+        @if (isAuthenticated()) {
+          <div class="nav-group" [class.open]="isCharactersMenuOpen()">
+            <button
+              type="button"
+              class="nav-trigger compact"
+              [class.active]="isCharactersSectionActive()"
+              [attr.aria-expanded]="isCharactersMenuOpen()"
+              (click)="toggleCharactersMenu()">
+              Personnages
+            </button>
+            @if (isCharactersMenuOpen()) {
+              <div class="nav-menu">
+                <a routerLink="/characters/liste" routerLinkActive="active" (click)="closeCharactersMenu()">Liste</a>
+                <a routerLink="/characters/creation" routerLinkActive="active" (click)="closeCharactersMenu()">Creation</a>
+              </div>
+            }
+          </div>
+        }
+        @if (isAdmin()) {
+          <a routerLink="/users" routerLinkActive="active">Utilisateurs</a>
+        }
+      </nav>
+    </div>
+
+    <aside class="session-panel">
+      <div class="session-line">
+        <span class="session-label">Utilisateur</span>
+        <div class="session-actions">
+          <strong>{{ displayName() }}</strong>
+          @if (isAuthenticated()) {
+            <button type="button" class="secondary compact" (click)="logout()">Se deconnecter</button>
+          } @else {
+            <button type="button" class="compact" (click)="login()">Se connecter</button>
+          }
+        </div>
+      </div>
+
+      <div class="session-line">
+        <span class="session-label">Role</span>
+        <strong>{{ primaryRole() }}</strong>
+      </div>
+
+      <div class="session-line">
+        <span class="session-label">Scopes</span>
+        <button type="button" class="scope-chip" [disabled]="scopes().length === 0" (click)="openScopes()">
+          {{ scopes().length }} scope{{ scopes().length > 1 ? 's' : '' }}
+        </button>
+      </div>
+    </aside>
+  </header>
+
+  <main class="page">
+    <router-outlet />
+  </main>
+
+  @if (isScopesModalOpen()) {
+    <div class="modal-backdrop" (click)="closeScopes()">
+      <section class="modal-card" (click)="$event.stopPropagation()">
+        <div class="modal-head">
+          <div>
+            <p class="eyebrow">Autorisations</p>
+            <h2>Scopes actifs</h2>
+          </div>
+          <button type="button" class="secondary compact" (click)="closeScopes()">Fermer</button>
+        </div>
+
+        <div class="scope-list">
+          @for (scope of scopes(); track scope) {
+            <span class="scope-pill">{{ scope }}</span>
+          }
+        </div>
+      </section>
+    </div>
+  }
+</div>

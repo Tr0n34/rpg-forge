@@ -1,0 +1,4 @@
+interface:
+  display_name: "Backend Configuration"
+  short_description: "RPG Spring Boot configuration rules"
+  default_prompt: "Use $backend-configuration to define or review Spring Boot configuration rules for the role-playing game management project."

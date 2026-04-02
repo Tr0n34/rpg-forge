@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Writer"
+  short_description: "Create and normalize local RPG project skills"
+  default_prompt: "Use $skill-writer to create or refactor a local skill for the role-playing game project so it matches the project skill template."

@@ -1,0 +1,120 @@
+<section class="page-grid">
+  <div class="panel character-editor">
+    <div class="editor-head">
+      <div>
+        <p class="kicker">Personnages</p>
+        <h2>{{ isEditMode() ? 'Modifier un personnage' : 'Creation de personnage' }}</h2>
+      </div>
+      <a routerLink="/characters/liste" class="link-button button-link secondary compact">Retour a la liste</a>
+    </div>
+
+    @if (error()) {
+      <p class="status-error">{{ error() }}</p>
+    }
+
+    @if (loading()) {
+      <p>Chargement...</p>
+    } @else {
+      <form class="form-grid" [formGroup]="characterForm" (ngSubmit)="save()">
+        <div class="identity-grid">
+          <div class="field">
+            <label for="firstName">Prenom</label>
+            <input id="firstName" type="text" formControlName="firstName" />
+          </div>
+
+          <div class="field">
+            <label for="lastName">Nom</label>
+            <input id="lastName" type="text" formControlName="lastName" />
+          </div>
+
+          <div class="field">
+            <label for="title">Titre</label>
+            <input id="title" type="text" formControlName="title" />
+          </div>
+
+          <div class="field">
+            <label for="birthDate">Date de naissance</label>
+            <input id="birthDate" type="date" formControlName="birthDate" />
+          </div>
+
+          <div class="field small-field">
+            <label for="age">Age</label>
+            <input id="age" type="number" formControlName="age" />
+          </div>
+
+          <div class="field small-field">
+            <label for="level">Niveau</label>
+            <input id="level" type="number" formControlName="level" />
+          </div>
+        </div>
+
+        <div class="allocation-layout">
+          <div class="profile-field">
+            <label>Repartition</label>
+            <div class="profile-selector" role="radiogroup" aria-label="Choix de repartition">
+              @for (profile of allocationProfiles; track profile.value) {
+                <button
+                  type="button"
+                  class="profile-option"
+                  [class.active]="characterForm.controls.allocationProfile.value === profile.value"
+                  (click)="selectAllocationProfile(profile.value)">
+                  <strong>{{ profile.label }}</strong>
+                  <span>{{ profile.scores.length ? profile.scores.join(', ') : 'Saisie libre' }}</span>
+                </button>
+              }
+            </div>
+            <p class="profile-help">{{ selectedProfile().description }}</p>
+          </div>
+        </div>
+
+        <app-characteristics-editor
+          [formGroup]="characterForm"
+          [attributeFields]="attributeFields"
+          [freeAllocation]="isFreeAllocation()"
+          [remainingScores]="remainingScores()"
+          [assignedScores]="assignedScores()"
+          (poolDragStarted)="startPoolDrag($event)"
+          (attributeDragStarted)="startAttributeDrag($any($event))"
+          (dropAllowed)="allowDrop($event)"
+          (droppedOnAttribute)="dropOnAttribute($event.event, $any($event.attributeKey))"
+          (droppedOnPool)="dropOnPool($event)"
+          (dragEnded)="onDragEnd()"
+          (attributeReset)="resetAttribute($any($event))" />
+
+        <div class="derived-grid">
+          <div class="derived-card">
+            <span>Points de vie</span>
+            <strong>{{ previewDerivedStats().healthPoints }}</strong>
+          </div>
+          <div class="derived-card">
+            <span>Points de sante</span>
+            <strong>{{ previewDerivedStats().woundPoints }}</strong>
+          </div>
+          <div class="derived-card">
+            <span>Points de mana</span>
+            <strong>{{ previewDerivedStats().manaPoints }}</strong>
+          </div>
+          <div class="derived-card">
+            <span>Defense passive</span>
+            <strong>{{ previewDerivedStats().passiveDefense }}</strong>
+          </div>
+          <div class="derived-card">
+            <span>Recuperation</span>
+            <strong>{{ previewDerivedStats().recovery }}</strong>
+          </div>
+          <div class="derived-card">
+            <span>Chance / Espoir / Action</span>
+            <strong>{{ previewDerivedStats().luckPoints }} / {{ previewDerivedStats().hopePoints }} / {{ previewDerivedStats().actionPoints }}</strong>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <button type="submit" class="primary-action rounded-action action-button" [disabled]="saving()">
+            {{ isEditMode() ? 'Mettre a jour' : 'Creer le personnage' }}
+          </button>
+          <a routerLink="/characters/liste" class="button-link action-link action-button">Annuler</a>
+        </div>
+      </form>
+    }
+  </div>
+</section>

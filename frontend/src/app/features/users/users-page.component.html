@@ -1,0 +1,87 @@
+<section class="page-grid">
+  <div class="panel">
+    <h2>Créer un utilisateur ou un administrateur</h2>
+    <form class="form-grid" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="field">
+        <label for="username">Nom d’utilisateur</label>
+        <input id="username" type="text" formControlName="username" />
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" />
+      </div>
+
+      <div class="field">
+        <label for="password">Mot de passe</label>
+        <input id="password" type="password" formControlName="password" />
+      </div>
+
+      <div class="field">
+        <label for="role">Rôle</label>
+        <select id="role" formControlName="role">
+          <option value="USER">Utilisateur</option>
+          <option value="ADMIN">Administrateur</option>
+        </select>
+      </div>
+
+      <div class="field checkbox">
+        <label><input type="checkbox" formControlName="usersRead" /> Scope `users.read`</label>
+      </div>
+
+      <div class="field checkbox">
+        <label><input type="checkbox" formControlName="usersWrite" /> Scope `users.write`</label>
+      </div>
+
+      <div class="toolbar">
+        <button type="submit" [disabled]="submitting()">Créer</button>
+      </div>
+    </form>
+
+    @if (success()) {
+      <p class="status-success">{{ success() }}</p>
+    }
+    @if (error()) {
+      <p class="status-error">{{ error() }}</p>
+    }
+  </div>
+
+  <div class="panel">
+    <div class="toolbar">
+      <h2>Utilisateurs enregistrés</h2>
+    </div>
+
+    @if (loading()) {
+      <p>Chargement…</p>
+    } @else {
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Email</th>
+              <th>Rôle</th>
+              <th>Scopes</th>
+              <th>Créé le</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of users(); track user.id) {
+              <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.role }}</td>
+                <td>{{ user.permissions.join(', ') }}</td>
+                <td>{{ user.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="5">Aucun utilisateur.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</section>

@@ -1,0 +1,72 @@
+services:
+  postgres:
+    image: postgres:18.3-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-rpgforge}
+      POSTGRES_USER: ${POSTGRES_USER:-rpgforge}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-rpgforge}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    networks:
+      default:
+        aliases:
+          - postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-rpgforge} -d ${POSTGRES_DB:-rpgforge}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-rpgforge}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-rpgforge}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-rpgforge}
+      SPRING_FLYWAY_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-rpgforge}
+      SPRING_FLYWAY_USER: ${POSTGRES_USER:-rpgforge}
+      SPRING_FLYWAY_PASSWORD: ${POSTGRES_PASSWORD:-rpgforge}
+      APP_SECURITY_ISSUER: ${APP_SECURITY_ISSUER:-http://127.0.0.1:8080}
+      APP_SECURITY_BOOTSTRAP_ADMIN_USERNAME: ${APP_SECURITY_BOOTSTRAP_ADMIN_USERNAME:-admin}
+      APP_SECURITY_BOOTSTRAP_ADMIN_EMAIL: ${APP_SECURITY_BOOTSTRAP_ADMIN_EMAIL:-admin@rpg-forge.local}
+      APP_SECURITY_BOOTSTRAP_ADMIN_PASSWORD: ${APP_SECURITY_BOOTSTRAP_ADMIN_PASSWORD:-Admin123!}
+      APP_SECURITY_BOOTSTRAP_CLIENT_ID: ${APP_SECURITY_BOOTSTRAP_CLIENT_ID:-rpg-forge-client}
+      APP_SECURITY_BOOTSTRAP_CLIENT_SECRET: ${APP_SECURITY_BOOTSTRAP_CLIENT_SECRET:-changeit}
+      APP_SECURITY_SPA_CLIENT_ID: ${APP_SECURITY_SPA_CLIENT_ID:-rpg-forge-spa}
+      APP_SECURITY_SPA_REDIRECT_URI: ${APP_SECURITY_SPA_REDIRECT_URI:-http://127.0.0.1:4200/auth/callback}
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    networks:
+      default:
+        aliases:
+          - backend
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+    depends_on:
+      backend:
+        condition: service_started
+    ports:
+      - "${FRONTEND_PORT:-4200}:80"
+    networks:
+      default:
+        aliases:
+          - frontend
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+
+networks:
+  default:
+    name: rpg-forge_default

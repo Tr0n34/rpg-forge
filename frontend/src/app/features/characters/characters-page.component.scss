@@ -1,0 +1,141 @@
+.list-actions {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.list-header h2 {
+  margin: 0;
+}
+
+.filter-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.filter-toggle.active {
+  background: linear-gradient(180deg, #f8dca3 0%, #f0c56c 100%);
+}
+
+.filter-icon {
+  position: relative;
+  width: 0.95rem;
+  height: 0.75rem;
+  display: inline-block;
+}
+
+.filter-icon::before,
+.filter-icon::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0.12rem;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.filter-icon::before {
+  top: 0.08rem;
+  box-shadow: 0 0.24rem 0 currentColor, 0 0.48rem 0 currentColor;
+}
+
+.filter-icon::after {
+  width: 0.28rem;
+  left: auto;
+  right: 0;
+  top: 0;
+  height: 0.28rem;
+  border: 0.12rem solid currentColor;
+  background: transparent;
+  border-radius: 50%;
+}
+
+.filters-form {
+  display: flex;
+  align-items: end;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 1rem;
+  background: rgba(19, 39, 51, 0.04);
+  border: 1px solid rgba(19, 39, 51, 0.08);
+}
+
+.compact-field {
+  flex: 0 0 auto;
+}
+
+.compact-field input {
+  min-width: 0;
+}
+
+.date-field input {
+  width: 9.5rem;
+}
+
+.search-field input {
+  width: 12rem;
+}
+
+.filters-actions {
+  display: flex;
+  align-items: end;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.link-button,
+.table-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  padding: 0.44rem 0.8rem;
+  border-radius: var(--button-radius);
+  border: 1px solid rgba(20, 35, 45, 0.12);
+  background: rgba(255, 255, 255, 0.7);
+  color: #14232d;
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+@media (max-width: 720px) {
+  .list-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .filter-toggle {
+    align-self: flex-start;
+  }
+
+  .filters-form {
+    align-items: stretch;
+  }
+
+  .date-field input,
+  .search-field input {
+    width: min(100%, 16rem);
+  }
+
+  .profile-selector {
+    grid-template-columns: 1fr;
+  }
+}

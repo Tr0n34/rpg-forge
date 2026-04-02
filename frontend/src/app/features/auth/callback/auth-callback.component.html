@@ -1,0 +1,8 @@
+<section class="panel">
+  <h2>Finalisation de la connexion</h2>
+  @if (error()) {
+    <p class="status-error">{{ error() }}</p>
+  } @else {
+    <p>Échange du code OAuth2 contre un token en cours…</p>
+  }
+</section>

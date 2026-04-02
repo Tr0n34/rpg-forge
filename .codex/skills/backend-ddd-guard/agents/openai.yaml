@@ -1,0 +1,4 @@
+interface:
+  display_name: "Backend DDD Guard"
+  short_description: "DDD guardrails for RPG backend with use case logging"
+  default_prompt: "Use $backend-ddd-guard to define or review domain-driven design rules for the role-playing game backend, including the requirement that each use case logs at least one INFO line."

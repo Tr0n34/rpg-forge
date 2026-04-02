@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Filter"
+  short_description: "Compact, toggleable list filter rules for Angular UI"
+  default_prompt: "Use $frontend-filter to define or review compact, toggleable list filters aligned with their list title in the Angular frontend."

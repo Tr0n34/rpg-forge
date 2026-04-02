@@ -1,0 +1,49 @@
+{
+  "errors": {
+    "character_not_found": {
+      "code": "character_not_found",
+      "message": "Character not found",
+      "status": 404
+    },
+    "user_not_found": {
+      "code": "user_not_found",
+      "message": "User not found",
+      "status": 404
+    },
+    "resource_not_found": {
+      "code": "resource_not_found",
+      "message": "Requested resource was not found",
+      "status": 404
+    },
+    "username_already_exists": {
+      "code": "username_already_exists",
+      "message": "Username already exists",
+      "status": 400
+    },
+    "email_already_exists": {
+      "code": "email_already_exists",
+      "message": "Email already exists",
+      "status": 400
+    },
+    "validation_error": {
+      "code": "validation_error",
+      "message": "Request validation failed",
+      "status": 400
+    },
+    "invalid_character_allocation": {
+      "code": "invalid_character_allocation",
+      "message": "Character attribute allocation does not match the selected profile",
+      "status": 400
+    },
+    "forbidden": {
+      "code": "forbidden",
+      "message": "Access denied",
+      "status": 403
+    },
+    "internal_error": {
+      "code": "internal_error",
+      "message": "Unexpected server error",
+      "status": 500
+    }
+  }
+}
